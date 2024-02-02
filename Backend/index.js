@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
     notFound,
   } = require('./middlewares/globalErrHandler.js');
   const songRoutes = require('./routes/songRoutes.js');
+  const songStatRoutes = require('./routes/songStatRoutes.js')
   
   // db connect
   dbConnect();
@@ -24,7 +25,8 @@ if (process.env.NODE_ENV !== 'production') {
   
   //routes
   app.use('/songs/', songRoutes);
-  
+  app.use('/stat/', songStatRoutes);
+
   //err middleware
   app.use(notFound);
   app.use(globalErrhandler);
