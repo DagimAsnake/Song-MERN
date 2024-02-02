@@ -9,6 +9,7 @@ if (process.env.NODE_ENV !== 'production') {
     globalErrhandler,
     notFound,
   } = require('./middlewares/globalErrHandler.js');
+  const songRoutes = require('./routes/songRoutes.js');
   
   // db connect
   dbConnect();
@@ -16,13 +17,13 @@ if (process.env.NODE_ENV !== 'production') {
   
   // pass incoming data
   app.use(express.json());
-  
+
   // url encoded
   app.use(express.urlencoded({ extended: true }));
   app.use(cors());
   
   //routes
- 
+  app.use('/songs/', songRoutes);
   
   //err middleware
   app.use(notFound);
