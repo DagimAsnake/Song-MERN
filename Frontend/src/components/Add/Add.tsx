@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { addSong } from '../Redux/Action/crudAction';
 
 interface Song {
-  id: string;
   title: string;
   artist: string;
   album: string;
@@ -10,8 +11,9 @@ interface Song {
 }
 
 const Add: React.FC = () => {
+  const dispatch = useDispatch();
+
   const [song, setSong] = useState<Song>({
-    id: '',
     title: '',
     artist: '',
     album: '',
@@ -29,7 +31,6 @@ const Add: React.FC = () => {
   };
 
   const handleBlur = (field: string) => {
-    // Clear the specific error when the field is blurred
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
 
@@ -54,10 +55,9 @@ const Add: React.FC = () => {
       return;
     }
 
-    console.log(song);
+    dispatch(addSong(song));
 
     setSong({
-      id: '',
       title: '',
       artist: '',
       album: '',
@@ -67,18 +67,18 @@ const Add: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl text-center font-bold mb-4">Add a Song</h1>
+    <div className='container mx-auto px-4 py-8'>
+      <h1 className='text-2xl text-center font-bold mb-4'>Add a Song</h1>
 
-      <div className="max-w-md mx-auto bg-white p-4 rounded-md shadow-md">
-        <div className="mb-4">
-          <label htmlFor="title" className="font-semibold">
+      <div className='max-w-md mx-auto bg-white p-4 rounded-md shadow-md'>
+        <div className='mb-4'>
+          <label htmlFor='title' className='font-semibold'>
             Title
           </label>
           <input
-            type="text"
-            id="title"
-            name="title"
+            type='text'
+            id='title'
+            name='title'
             className={`${
               errors.title ? 'border-red-500' : ''
             } w-full border border-gray-300 rounded-md py-2 px-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -87,18 +87,18 @@ const Add: React.FC = () => {
             onBlur={() => handleBlur('title')}
           />
           {errors.title && (
-            <p className="text-red-500 text-xs italic">{errors.title}</p>
+            <p className='text-red-500 text-xs italic'>{errors.title}</p>
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="artist" className="font-semibold">
+        <div className='mb-4'>
+          <label htmlFor='artist' className='font-semibold'>
             Artist
           </label>
           <input
-            type="text"
-            id="artist"
-            name="artist"
+            type='text'
+            id='artist'
+            name='artist'
             className={`${
               errors.artist ? 'border-red-500' : ''
             } w-full border border-gray-300 rounded-md py-2 px-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -107,18 +107,18 @@ const Add: React.FC = () => {
             onBlur={() => handleBlur('artist')}
           />
           {errors.artist && (
-            <p className="text-red-500 text-xs italic">{errors.artist}</p>
+            <p className='text-red-500 text-xs italic'>{errors.artist}</p>
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="album" className="font-semibold">
+        <div className='mb-4'>
+          <label htmlFor='album' className='font-semibold'>
             Album
           </label>
           <input
-            type="text"
-            id="album"
-            name="album"
+            type='text'
+            id='album'
+            name='album'
             className={`${
               errors.album ? 'border-red-500' : ''
             } w-full border border-gray-300 rounded-md py-2 px-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -127,17 +127,17 @@ const Add: React.FC = () => {
             onBlur={() => handleBlur('album')}
           />
           {errors.album && (
-            <p className="text-red-500 text-xs italic">{errors.album}</p>
+            <p className='text-red-500 text-xs italic'>{errors.album}</p>
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="genre" className="font-semibold">
+        <div className='mb-4'>
+          <label htmlFor='genre' className='font-semibold'>
             Genre
           </label>
           <select
-            id="genre"
-            name="genre"
+            id='genre'
+            name='genre'
             className={`${
               errors.genre ? 'border-red-500' : ''
             } w-full border border-gray-300 rounded-md py-2 px-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -145,22 +145,22 @@ const Add: React.FC = () => {
             onChange={handleInputChange}
             onBlur={() => handleBlur('genre')}
           >
-            <option value="">Select Genre</option>
-            <option value="Rock">Rock</option>
-            <option value="Jazz">Jazz</option>
-            <option value="Pop">Pop</option>
-            <option value="Hip Hop">Hip Hop</option>
+            <option value=''>Select Genre</option>
+            <option value='Rock'>Rock</option>
+            <option value='Jazz'>Jazz</option>
+            <option value='Pop'>Pop</option>
+            <option value='Hip Hop'>Hip Hop</option>
           </select>
           {errors.genre && (
-            <p className="text-red-500 text-xs italic">{errors.genre}</p>
+            <p className='text-red-500 text-xs italic'>{errors.genre}</p>
           )}
         </div>
 
         <button
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 w-full flex items-center justify-center"
+          className='bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 w-full flex items-center justify-center'
           onClick={handleAddSong}
         >
-          <FaPlus className="mr-2" />
+          <FaPlus className='mr-2' />
           Add Song
         </button>
       </div>
