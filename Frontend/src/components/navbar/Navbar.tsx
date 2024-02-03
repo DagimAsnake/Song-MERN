@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'; // Assuming you're using React Router for navigation
-import { FaMusic } from 'react-icons/fa'; // Example usage of React Icons
+import { Link } from 'react-router-dom';
+import { FaMusic } from 'react-icons/fa';
 
 const Navbar = () => {
     return (

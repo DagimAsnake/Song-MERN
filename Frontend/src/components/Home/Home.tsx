@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { GiLoveSong } from 'react-icons/gi';
 
 interface Song {
   id: string;
   title: string;
   artist: string;
+  album: string;
   genre: string;
 }
 
@@ -13,18 +15,21 @@ const songList: Song[] = [
     id: '1',
     title: 'First Song',
     artist: 'First Artist',
+    album: "first ALB",
     genre: 'Rock',
   },
   {
     id: '2',
     title: 'Second Song',
     artist: 'Second Artist',
+    album: "first ALB",
     genre: 'Jazz',
   },
   {
     id: '3',
     title: 'Third Song',
     artist: 'Third Artist',
+    album: "first ALB",
     genre: 'Rock',
   },
 ];
@@ -51,9 +56,9 @@ const Home: React.FC = () => {
               </p>
             </div>
             <div className='flex justify-center'>
-              <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'>
+              <Link to={`/details/${song.id}`} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'>
                 View Details
-              </button>
+              </Link>
             </div>
           </div>
         ))}
