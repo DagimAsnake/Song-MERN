@@ -37,7 +37,9 @@ const Details: React.FC = () => {
             <p>{song.album}</p>
           </div>
           <div className='mb-4'>
-            <p>{song.genre}</p>
+            <p className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded-3xl focus:outline-none focus:shadow-outline cursor-pointer'>
+              {song.genre}
+            </p>
           </div>
         </div>
         <div className='flex justify-center'>
