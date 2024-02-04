@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { GiLoveSong } from 'react-icons/gi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneSong, deleteSong } from '../store/songSlice'
-import { useNavigate } from "react-router-dom";
+import { getOneSong, deleteSong } from '../store/songSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface Song {
   crudSong: {
@@ -14,11 +14,10 @@ interface Song {
     artist: string;
     album: string;
     genre: string;
-  }
+  };
 }
 
 const Details: React.FC = () => {
-
   const { id } = useParams();
   const songState = useSelector((state) => state.song.selectedSong);
   const dispatch = useDispatch();
@@ -38,22 +37,26 @@ const Details: React.FC = () => {
   const handleDelete = () => {
     fetch(`http://localhost:8000/songs/${songState?._id}`, {
       method: 'DELETE',
-      }).then((response) => {
-      if (response.ok) {
-          dispatch(deleteSong(songState?._id))
-          navigate("/"); 
-      } else {
-          throw new Error('Failed to delete blog'); 
-      }
-      }).catch((error) => {
-      console.error(error);
+    })
+      .then((response) => {
+        if (response.ok) {
+          dispatch(deleteSong(songState?._id));
+          navigate('/');
+        } else {
+          throw new Error('Failed to delete blog');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
   return (
     <div className='container mx-auto px-4 py-8'>
       <div className='max-w-md mx-auto bg-white p-4 rounded-md shadow-md'>
-        <h1 className='text-2xl text-center font-bold mb-4'>{songState?.title}</h1>
+        <h1 className='text-2xl text-center font-bold mb-4'>
+          {songState?.title}
+        </h1>
         <div className='flex items-center justify-center mb-4'>
           <GiLoveSong className='text-4xl text-red-500 mr-2' />
           <p className='text-xl'>{songState?.artist}</p>
@@ -63,9 +66,12 @@ const Details: React.FC = () => {
             <p>{songState?.album}</p>
           </div>
           <div className='mb-4'>
-            <p className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded-3xl focus:outline-none focus:shadow-outline cursor-pointer'>
+            <Link
+              to={`/genre/${songState?.genre}`}
+              className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded-3xl focus:outline-none focus:shadow-outline cursor-pointer'
+            >
               {songState?.genre}
-            </p>
+            </Link>
           </div>
         </div>
         <div className='flex justify-center'>

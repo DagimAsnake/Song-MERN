@@ -17,7 +17,7 @@ interface RootState {
 const Home: React.FC = () => {
   const dispatch = useDispatch();
   const songState = useSelector((state) => state.song);
- 
+
   useEffect(() => {
     fetch('http://localhost:8000/songs')
       .then((response) => response.json())
@@ -47,9 +47,12 @@ const Home: React.FC = () => {
             </div>
             <div className='flex justify-around mb-4'>
               <p className='text-gray-700'>{song.artist}</p>
-              <p className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded-3xl focus:outline-none focus:shadow-outline cursor-pointer'>
+              <Link
+                to={`/genre/${song.genre}`}
+                className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded-3xl focus:outline-none focus:shadow-outline cursor-pointer'
+              >
                 {song.genre}
-              </p>
+              </Link>
             </div>
             <div className='flex justify-center'>
               <Link
