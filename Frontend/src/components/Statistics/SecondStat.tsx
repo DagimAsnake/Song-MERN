@@ -1,4 +1,7 @@
+import React, { useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
+import { artStat } from '../store/statSlice';
 
 interface ArtistData {
     artist: string;
@@ -13,6 +16,23 @@ interface ArtistData {
   ];
 
 const SecondStat = () => {
+  const dispatch = useDispatch();
+  const statState = useSelector((state) => state.stat);
+
+  useEffect(() => {
+      fetch('http://localhost:8000/stat/songs-albums-by-artist-count')
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          dispatch(artStat(data.data));
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, []);
+  
+    const artistData = statState.artSongAlbum;
+
   return (
     <div>
        <h2 className="text-xl text-center font-bold mb-4">Number of Songs & Albums Each Artist Has</h2>
@@ -22,7 +42,7 @@ const SecondStat = () => {
               <div className="text-4xl text-blue-500 mr-4"><FaUser /></div>
               <div>
                 <h3 className="text-lg font-bold">{artist.artist}</h3>
-                <p>{`${artist.songs} Songs | ${artist.albums} Albums`}</p>
+                <p>{`${artist.songsCount} Songs | ${artist.albumsCount} Albums`}</p>
               </div>
             </div>
           ))}

@@ -25,7 +25,7 @@ module.exports.getTotalCountsCtrl = asyncHandler(async (req, res) => {
 
     res.status(200).json({
         status: 'success',
-        data: totalCounts[0] // Since we grouped by null, totalCounts will contain only one element
+        data: totalCounts[0] 
     });
 });
 

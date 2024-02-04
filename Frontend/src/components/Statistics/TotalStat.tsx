@@ -1,5 +1,8 @@
+import React, { useEffect } from 'react';
 import { FaMusic, FaUser, FaCompactDisc } from 'react-icons/fa';
 import { IoMdMusicalNote } from 'react-icons/io';
+import { useSelector, useDispatch } from 'react-redux';
+import { totalStat } from '../store/statSlice';
 
 interface Data {
   songs: number;
@@ -8,14 +11,24 @@ interface Data {
   genres: number;
 }
 
-const data: Data = {
-    songs: 150,
-    artists: 30,
-    albums: 50,
-    genres: 10,
-  };
-
 const TotalStat = () => {
+    const dispatch = useDispatch();
+    const statState = useSelector((state) => state.stat);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/stat/total-counts')
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+            dispatch(totalStat(data.data));
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }, []);
+    
+      const statList = statState.totalStatistics;
+
   return (
     <div>
       <h2 className='text-2xl font-bold mb-4 text-center'>Total Statistics</h2>
@@ -26,7 +39,7 @@ const TotalStat = () => {
           </div>
           <div className=''>
             <h2 className='text-xl font-bold'>Total Songs</h2>
-            <p>{data.songs}</p>
+            <p className='text-center'>{statList.songs}</p>
           </div>
         </div>
         <div className='bg-white p-4 rounded-md shadow-md flex items-center justify-center'>
@@ -35,7 +48,7 @@ const TotalStat = () => {
           </div>
           <div className=''>
             <h2 className='text-xl font-bold'>Total Artist</h2>
-            <p>{data.artists}</p>
+            <p className='text-center'>{statList.artists}</p>
           </div>
         </div>
         <div className='bg-white p-4 rounded-md shadow-md flex items-center justify-center'>
@@ -44,7 +57,7 @@ const TotalStat = () => {
           </div>
           <div className=''>
             <h2 className='text-xl font-bold'>Total Album</h2>
-            <p>{data.albums}</p>
+            <p className='text-center'>{statList.albums}</p>
           </div>
         </div>
         <div className='bg-white p-4 rounded-md shadow-md flex items-center justify-center'>
@@ -53,7 +66,7 @@ const TotalStat = () => {
           </div>
           <div className=''>
             <h2 className='text-xl font-bold'>Total Genre</h2>
-            <p>{data.genres}</p>
+            <p className='text-center'>{statList.genres}</p>
           </div>
         </div>
       </div>

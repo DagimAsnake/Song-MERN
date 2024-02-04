@@ -1,4 +1,7 @@
+import React, { useEffect } from 'react';
 import { FaCompactDisc } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
+import { albStat } from '../store/statSlice';
 
 interface AlbumData {
   album: string;
@@ -12,12 +15,29 @@ const albumData: AlbumData[] = [
 ];
 
 const ThirdStat = () => {
+  const dispatch = useDispatch();
+    const statState = useSelector((state) => state.stat);
+
+    useEffect(() => {
+        fetch('http://localhost:8000/stat/songs-by-album-count')
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+            dispatch(albStat(data.data));
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }, []);
+    
+      const albumData = statState.albSong;
+
   return (
     <div>
       <h2 className='text-xl text-center font-bold mb-4'>
         Number of Songs in Each Album
       </h2>
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
         {albumData.map((album) => (
           <div
             key={album.album}
@@ -28,7 +48,7 @@ const ThirdStat = () => {
             </div>
             <div>
               <h3 className='text-lg font-bold'>{album.album}</h3>
-              <p>{album.songs}</p>
+              <p className='text-center'>{album.songCount}</p>
             </div>
           </div>
         ))}
