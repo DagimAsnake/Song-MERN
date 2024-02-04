@@ -19,7 +19,7 @@ module.exports.createSongCtrl = asyncHandler(async (req, res) => {
 });
 
 module.exports.getAllSongsCtrl = asyncHandler(async (req, res) => {
-  const songs = await Song.find();
+  const songs = await Song.find().sort({ createdAt: -1 });
 
   res.status(200).json({
     status: 'success',

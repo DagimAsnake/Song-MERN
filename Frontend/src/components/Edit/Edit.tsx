@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneSong, updateSong } from '../store/songSlice';
+import { useParams, useNavigate } from "react-router-dom";
 
 interface Song {
   id: string;
@@ -10,12 +13,17 @@ interface Song {
 }
 
 const Edit: React.FC = () => {
+  const songState = useSelector((state) => state.song.selectedSong);
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
   const [song, setSong] = useState<Song>({
-    id: '1',
-    title: 'firt title',
-    artist: 'firts artist',
-    album: 'the kin',
-    genre: 'Rock',
+    id: '',
+    title: '',
+    artist: '',
+    album: '',
+    genre: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -29,9 +37,26 @@ const Edit: React.FC = () => {
   };
 
   const handleBlur = (field: string) => {
-    // Clear the specific error when the field is blurred
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/songs/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch(getOneSong(data.data));
+        setSong({
+          ...song,
+          title: songState?.title,
+          artist: songState?.artist,
+          album: songState?.album,
+          genre: songState?.genre
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [dispatch, id]);
 
   const handleAddSong = () => {
     const validationErrors: Record<string, string> = {};
@@ -54,15 +79,29 @@ const Edit: React.FC = () => {
       return;
     }
 
-    console.log(song);
+    fetch(`http://localhost:8000/songs/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(song),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const updatedSongData = {
+            id: id,
+            title: song.title,
+            artist: song.artist,
+            album: song.album,
+            genre: song.genre
+          };
+        dispatch(updateSong(updatedSongData));
+        navigate(`/details/${id}`);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-    setSong({
-      id: '',
-      title: '',
-      artist: '',
-      album: '',
-      genre: '',
-    });
     setErrors({});
   };
 

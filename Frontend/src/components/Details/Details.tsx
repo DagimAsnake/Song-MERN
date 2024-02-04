@@ -1,50 +1,76 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { GiLoveSong } from 'react-icons/gi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneSong, deleteSong } from '../store/songSlice'
+import { useNavigate } from "react-router-dom";
 
 interface Song {
-  id: string;
-  title: string;
-  artist: string;
-  album: string;
-  genre: string;
+  crudSong: {
+    id: string;
+    title: string;
+    artist: string;
+    album: string;
+    genre: string;
+  }
 }
 
-const song: Song = {
-  id: '1',
-  title: 'First Song',
-  artist: 'First Artist',
-  album: 'The King',
-  genre: 'Rock',
-};
-
 const Details: React.FC = () => {
+
+  const { id } = useParams();
+  const songState = useSelector((state) => state.song.selectedSong);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/songs/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch(getOneSong(data.data));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [dispatch, id]);
+
   const handleDelete = () => {
-    // Handle delete logic here
+    fetch(`http://localhost:8000/songs/${songState?._id}`, {
+      method: 'DELETE',
+      }).then((response) => {
+      if (response.ok) {
+          dispatch(deleteSong(songState?._id))
+          navigate("/"); 
+      } else {
+          throw new Error('Failed to delete blog'); 
+      }
+      }).catch((error) => {
+      console.error(error);
+      });
   };
 
   return (
     <div className='container mx-auto px-4 py-8'>
       <div className='max-w-md mx-auto bg-white p-4 rounded-md shadow-md'>
-        <h1 className='text-2xl text-center font-bold mb-4'>{song.title}</h1>
+        <h1 className='text-2xl text-center font-bold mb-4'>{songState?.title}</h1>
         <div className='flex items-center justify-center mb-4'>
           <GiLoveSong className='text-4xl text-red-500 mr-2' />
-          <p className='text-xl'>{song.artist}</p>
+          <p className='text-xl'>{songState?.artist}</p>
         </div>
         <div className='flex justify-around mb-4'>
           <div className='mb-4'>
-            <p>{song.album}</p>
+            <p>{songState?.album}</p>
           </div>
           <div className='mb-4'>
             <p className='bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded-3xl focus:outline-none focus:shadow-outline cursor-pointer'>
-              {song.genre}
+              {songState?.genre}
             </p>
           </div>
         </div>
         <div className='flex justify-center'>
           <Link
-            to={`/edit/${song.id}`}
+            to={`/edit/${songState?._id}`}
             className='bg-blue-500 text-white font-bold py-2 px-4 rounded mr-2 flex items-center'
           >
             <FaEdit className='mr-2' />
