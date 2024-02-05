@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { IoMdMusicalNote } from "react-icons/io";
 import { useSelector, useDispatch } from 'react-redux';
-import { genreStat } from '../store/statSlice';
+import { genreStat } from '../store/Slice/statSlice';
 
 interface GenreData {
     genre: string;
@@ -16,7 +16,6 @@ const FirstStat = () => {
         fetch('http://localhost:8000/stat/songs-by-genre-count')
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
             dispatch(genreStat(data.data));
           })
           .catch((error) => {

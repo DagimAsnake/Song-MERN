@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { GiLoveSong } from 'react-icons/gi';
-import { getAllSong } from '../store/songSlice';
+import { getAllSong } from '../store/Slice/songSlice';
 
 interface RootState {
   crudSong: {
@@ -19,17 +19,10 @@ const Home: React.FC = () => {
   const songState = useSelector((state) => state.song);
 
   useEffect(() => {
-    fetch('http://localhost:8000/songs')
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(getAllSong(data.data));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        dispatch(getAllSong())
   }, []);
 
-  const songList = songState.songs;
+  const songList = songState?.songs;
 
   return (
     <div className='container mx-auto px-3'>
@@ -37,8 +30,8 @@ const Home: React.FC = () => {
         Welcome to the Song App explore and Enjoy the song
       </h1>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-        {songList.map((song) => (
-          <div key={song._id} className='bg-gray-100 p-4 rounded-md shadow-md'>
+        {songList?.map((song) => (
+          <div key={song?._id} className='bg-gray-100 p-4 rounded-md shadow-md'>
             <div className='text-lg font-bold flex items-center justify-center'>
               <GiLoveSong className='ml-3' />
               <h2 className='text-xl font-semibold pt-2 mb-2 text-center'>

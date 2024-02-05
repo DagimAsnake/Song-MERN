@@ -8,7 +8,7 @@ const songSlice = createSlice({
   reducers: {
     addSong(state, action) {
       const { title, artist, album, genre } = action.payload;
-      const newSong = { title, artist, album, genre };
+      const newSong = { _id: "1", title, artist, album, genre };
       state.songs.push(newSong);
     },
     getAllSong(state, action) {
@@ -22,8 +22,8 @@ const songSlice = createSlice({
     },
     deleteSong(state, action) {
       const songId = action.payload;
-      state.songs = state.songs.filter((song) => song.id !== songId);
-      if (state.selectedSong && state.selectedSong.id === songId) {
+      state.songs = state.songs.filter((song) => song._id !== songId);
+      if (state.selectedSong && state.selectedSong._id === songId) {
         state.selectedSong = null;
       }
     },
@@ -40,6 +40,12 @@ const songSlice = createSlice({
   },
 });
 
-export const { addSong, getAllSong, getGenreSong, getOneSong, deleteSong, updateSong } =
-  songSlice.actions;
+export const {
+  addSong,
+  getAllSong,
+  getGenreSong,
+  getOneSong,
+  deleteSong,
+  updateSong,
+} = songSlice.actions;
 export default songSlice.reducer;

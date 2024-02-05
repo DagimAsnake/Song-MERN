@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { addSong } from '../store/songSlice';
-import { useNavigate } from "react-router-dom";
+import { addSong } from '../store/Slice/songSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface Song {
   title: string;
@@ -58,21 +58,7 @@ const Add: React.FC = () => {
     }
 
     dispatch(addSong(song));
-
-    fetch('http://localhost:8000/songs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(song),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    navigate('/')
 
     setSong({
       title: '',

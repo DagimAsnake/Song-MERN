@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { GiLoveSong } from 'react-icons/gi';
-import { getGenreSong } from '../store/songSlice';
+import { getGenreSong } from '../store/Slice/songSlice';
 
 interface RootState {
   crudSong: {
@@ -14,7 +14,7 @@ interface RootState {
   }[];
 }
 
-const Home: React.FC = () => {
+const Genre: React.FC = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const songState = useSelector((state) => state.song);
@@ -28,7 +28,7 @@ const Home: React.FC = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [id]);
 
   const songList = songState.genreSongs;
 
@@ -67,4 +67,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Genre;

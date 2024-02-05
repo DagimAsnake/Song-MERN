@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneSong, updateSong } from '../store/songSlice';
-import { useParams, useNavigate } from "react-router-dom";
+import { getOneSong, updateSong } from '../store/Slice/songSlice';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface Song {
   id: string;
@@ -14,16 +14,20 @@ interface Song {
 
 const Edit: React.FC = () => {
   const songState = useSelector((state) => state.song.selectedSong);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  useEffect(() => {
+    dispatch(getOneSong(id));
+  }, [dispatch, id]);
+
   const [song, setSong] = useState<Song>({
-    id: '',
-    title: '',
-    artist: '',
-    album: '',
-    genre: '',
+    id: songState?.id,
+    title: songState?.title,
+    artist: songState?.artist,
+    album: songState?.album,
+    genre: songState?.genre,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -39,24 +43,6 @@ const Edit: React.FC = () => {
   const handleBlur = (field: string) => {
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }));
   };
-
-  useEffect(() => {
-    fetch(`http://localhost:8000/songs/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(getOneSong(data.data));
-        setSong({
-          ...song,
-          title: songState?.title,
-          artist: songState?.artist,
-          album: songState?.album,
-          genre: songState?.genre
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [dispatch, id]);
 
   const handleAddSong = () => {
     const validationErrors: Record<string, string> = {};
@@ -79,45 +65,33 @@ const Edit: React.FC = () => {
       return;
     }
 
-    fetch(`http://localhost:8000/songs/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(song),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const updatedSongData = {
-            id: id,
-            title: song.title,
-            artist: song.artist,
-            album: song.album,
-            genre: song.genre
-          };
-        dispatch(updateSong(updatedSongData));
-        navigate(`/details/${id}`);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const updatedSongData = {
+      id: id,
+      title: song.title,
+      artist: song.artist,
+      album: song.album,
+      genre: song.genre,
+    };
+
+    dispatch(updateSong(updatedSongData));
+    navigate(`/details/${id}`);
 
     setErrors({});
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl text-center font-bold mb-4">Edit a Song</h1>
+    <div className='container mx-auto px-4 py-8'>
+      <h1 className='text-2xl text-center font-bold mb-4'>Edit a Song</h1>
 
-      <div className="max-w-md mx-auto bg-white p-4 rounded-md shadow-md">
-        <div className="mb-4">
-          <label htmlFor="title" className="font-semibold">
+      <div className='max-w-md mx-auto bg-white p-4 rounded-md shadow-md'>
+        <div className='mb-4'>
+          <label htmlFor='title' className='font-semibold'>
             Title
           </label>
           <input
-            type="text"
-            id="title"
-            name="title"
+            type='text'
+            id='title'
+            name='title'
             className={`${
               errors.title ? 'border-red-500' : ''
             } w-full border border-gray-300 rounded-md py-2 px-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -126,18 +100,18 @@ const Edit: React.FC = () => {
             onBlur={() => handleBlur('title')}
           />
           {errors.title && (
-            <p className="text-red-500 text-xs italic">{errors.title}</p>
+            <p className='text-red-500 text-xs italic'>{errors.title}</p>
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="artist" className="font-semibold">
+        <div className='mb-4'>
+          <label htmlFor='artist' className='font-semibold'>
             Artist
           </label>
           <input
-            type="text"
-            id="artist"
-            name="artist"
+            type='text'
+            id='artist'
+            name='artist'
             className={`${
               errors.artist ? 'border-red-500' : ''
             } w-full border border-gray-300 rounded-md py-2 px-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -146,18 +120,18 @@ const Edit: React.FC = () => {
             onBlur={() => handleBlur('artist')}
           />
           {errors.artist && (
-            <p className="text-red-500 text-xs italic">{errors.artist}</p>
+            <p className='text-red-500 text-xs italic'>{errors.artist}</p>
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="album" className="font-semibold">
+        <div className='mb-4'>
+          <label htmlFor='album' className='font-semibold'>
             Album
           </label>
           <input
-            type="text"
-            id="album"
-            name="album"
+            type='text'
+            id='album'
+            name='album'
             className={`${
               errors.album ? 'border-red-500' : ''
             } w-full border border-gray-300 rounded-md py-2 px-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -166,17 +140,17 @@ const Edit: React.FC = () => {
             onBlur={() => handleBlur('album')}
           />
           {errors.album && (
-            <p className="text-red-500 text-xs italic">{errors.album}</p>
+            <p className='text-red-500 text-xs italic'>{errors.album}</p>
           )}
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="genre" className="font-semibold">
+        <div className='mb-4'>
+          <label htmlFor='genre' className='font-semibold'>
             Genre
           </label>
           <select
-            id="genre"
-            name="genre"
+            id='genre'
+            name='genre'
             className={`${
               errors.genre ? 'border-red-500' : ''
             } w-full border border-gray-300 rounded-md py-2 px-3 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -184,22 +158,22 @@ const Edit: React.FC = () => {
             onChange={handleInputChange}
             onBlur={() => handleBlur('genre')}
           >
-            <option value="">Select Genre</option>
-            <option value="Rock">Rock</option>
-            <option value="Jazz">Jazz</option>
-            <option value="Pop">Pop</option>
-            <option value="Hip Hop">Hip Hop</option>
+            <option value=''>Select Genre</option>
+            <option value='Rock'>Rock</option>
+            <option value='Jazz'>Jazz</option>
+            <option value='Pop'>Pop</option>
+            <option value='Hip Hop'>Hip Hop</option>
           </select>
           {errors.genre && (
-            <p className="text-red-500 text-xs italic">{errors.genre}</p>
+            <p className='text-red-500 text-xs italic'>{errors.genre}</p>
           )}
         </div>
 
         <button
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 w-full flex items-center justify-center"
+          className='bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 w-full flex items-center justify-center'
           onClick={handleAddSong}
         >
-          <FaPlus className="mr-2" />
+          <FaPlus className='mr-2' />
           Update Song
         </button>
       </div>

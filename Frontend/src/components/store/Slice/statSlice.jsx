@@ -9,7 +9,7 @@ const initialStatState = {
   },
   genreSong: [],
   artSongAlbum: [],
-  albSong: []
+  albSong: [],
 };
 
 const statSlice = createSlice({
@@ -17,6 +17,7 @@ const statSlice = createSlice({
   initialState: initialStatState,
   reducers: {
     totalStat(state, action) {
+      // console.log(action.payload);
       const { songs, artists, albums, genres } = action.payload;
       state.totalStatistics = {
         songs: songs,
@@ -26,14 +27,14 @@ const statSlice = createSlice({
       };
     },
     genreStat(state, action) {
-        state.genreSong = action.payload;
+      state.genreSong = action.payload;
     },
     artStat(state, action) {
-        state.artSongAlbum = action.payload;
+      state.artSongAlbum = action.payload;
     },
     albStat(state, action) {
-        state.albSong = action.payload;
-    }
+      state.albSong = action.payload;
+    },
   },
 });
 

@@ -97,7 +97,7 @@ module.exports.getSongsByGenreCtrl = asyncHandler(async (req, res) => {
   const { genre } = req.query;
 
   const songs = await Song.find({ genre }).sort({ createdAt: -1 });
-
+  
   res.status(200).json({
     status: 'success',
     data: songs,

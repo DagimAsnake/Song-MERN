@@ -4,7 +4,7 @@ import { GiLoveSong } from 'react-icons/gi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneSong, deleteSong } from '../store/songSlice';
+import { getOneSong, deleteSong } from '../store/Slice/songSlice';
 import { useNavigate } from 'react-router-dom';
 
 interface Song {
@@ -24,31 +24,12 @@ const Details: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8000/songs/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(getOneSong(data.data));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    dispatch(getOneSong(id));
   }, [dispatch, id]);
 
   const handleDelete = () => {
-    fetch(`http://localhost:8000/songs/${songState?._id}`, {
-      method: 'DELETE',
-    })
-      .then((response) => {
-        if (response.ok) {
-          dispatch(deleteSong(songState?._id));
-          navigate('/');
-        } else {
-          throw new Error('Failed to delete blog');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    dispatch(deleteSong(songState?._id));
+    navigate('/');
   };
 
   return (
