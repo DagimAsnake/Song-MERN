@@ -10,14 +10,20 @@ const initialStatState = {
   genreSong: [],
   artSongAlbum: [],
   albSong: [],
+  isTotalStatisticsLoading: false,
+  isGenreSongLoading: false,
+  isArtSongAlbumLoading: false,
+  isAlbSongLoading: false
 };
 
 const statSlice = createSlice({
   name: 'stat',
   initialState: initialStatState,
   reducers: {
+    getTotalStatFetch(state) {
+      state.isTotalStatisticsLoading = true
+    },
     totalStat(state, action) {
-      // console.log(action.payload);
       const { songs, artists, albums, genres } = action.payload;
       state.totalStatistics = {
         songs: songs,
@@ -26,11 +32,20 @@ const statSlice = createSlice({
         genres: genres,
       };
     },
+    getGenreStatFetch(state) {
+      state.isGenreSongLoading = true
+    },
     genreStat(state, action) {
       state.genreSong = action.payload;
     },
+    getArtStatFetch(state) {
+      state.isArtSongAlbumLoading = true
+    },
     artStat(state, action) {
       state.artSongAlbum = action.payload;
+    },
+    getAlbFetch(state) {
+      state.isAlbSongLoading = true
     },
     albStat(state, action) {
       state.albSong = action.payload;
@@ -38,5 +53,5 @@ const statSlice = createSlice({
   },
 });
 
-export const { totalStat, genreStat, artStat, albStat } = statSlice.actions;
+export const { getTotalStatFetch, getGenreStatFetch, getArtStatFetch, getAlbFetch, totalStat, genreStat, artStat, albStat } = statSlice.actions;
 export default statSlice.reducer;

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { artStat } from '../store/Slice/statSlice';
+import { getArtStatFetch } from '../store/Slice/statSlice';
 
 interface ArtistData {
   artist: string;
-  songs: number;
-  albums: number;
+  songsCount: number;
+  albumsCount: number;
 }
 
 const SecondStat = () => {
@@ -14,14 +14,7 @@ const SecondStat = () => {
   const statState = useSelector((state) => state.stat);
 
   useEffect(() => {
-    fetch('http://localhost:8000/stat/songs-albums-by-artist-count')
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(artStat(data.data));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        dispatch(getArtStatFetch());
   }, []);
 
   const artistData = statState.artSongAlbum;

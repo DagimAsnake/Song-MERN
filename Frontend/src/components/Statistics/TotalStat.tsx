@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { FaMusic, FaUser, FaCompactDisc } from 'react-icons/fa';
 import { IoMdMusicalNote } from 'react-icons/io';
 import { useSelector, useDispatch } from 'react-redux';
-import { totalStat } from '../store/Slice/statSlice';
+import { getTotalStatFetch } from '../store/Slice/statSlice';
 
 interface Data {
   songs: number;
@@ -12,21 +12,14 @@ interface Data {
 }
 
 const TotalStat = () => {
-    const dispatch = useDispatch();
-    const statState = useSelector((state) => state.stat);
+  const dispatch = useDispatch();
+  const statState = useSelector((state) => state.stat);
 
-    useEffect(() => {
-        fetch('http://localhost:8000/stat/total-counts')
-          .then((response) => response.json())
-          .then((data) => {
-            dispatch(totalStat(data.data));
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }, []);
-    
-      const statList = statState.totalStatistics;
+  useEffect(() => {
+    dispatch(getTotalStatFetch());
+  }, []);
+
+  const statList = statState.totalStatistics;
 
   return (
     <div>
