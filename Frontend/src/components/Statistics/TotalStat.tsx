@@ -11,15 +11,15 @@ interface Data {
   genres: number;
 }
 
-const TotalStat = () => {
+const TotalStat: React.FC = () => {
   const dispatch = useDispatch();
   const statState = useSelector((state) => state.stat);
 
   useEffect(() => {
     dispatch(getTotalStatFetch());
-  }, []);
+  }, [dispatch]);
 
-  const statList = statState.totalStatistics;
+  const statList: Data = statState.totalStatistics || { songs: 0, artists: 0, albums: 0, genres: 0 };
 
   return (
     <div>

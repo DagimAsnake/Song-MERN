@@ -35,7 +35,7 @@ const Genre: React.FC = () => {
   return (
     <div className='container mx-auto px-3'>
       <h1 className='text-2xl font-bold my-4 text-center'>
-        Welcome to the Song App explore and Enjoy the song
+        Welcome to <span className='text-5xl'>{id}</span> and Enjoy the song
       </h1>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
         {songList.map((song) => (

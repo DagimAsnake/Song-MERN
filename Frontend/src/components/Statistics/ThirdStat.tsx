@@ -8,15 +8,15 @@ interface AlbumData {
   songCount: number;
 }
 
-const ThirdStat = () => {
+const ThirdStat: React.FC = () => {
   const dispatch = useDispatch();
   const statState = useSelector((state) => state.stat);
 
   useEffect(() => {
     dispatch(getAlbFetch());
-  }, []);
+  }, [dispatch]);
 
-  const albumData = statState.albSong;
+  const albumData: AlbumData[] = statState.albSong || [];
 
   return (
     <div>

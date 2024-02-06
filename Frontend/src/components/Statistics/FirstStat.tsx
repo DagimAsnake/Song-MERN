@@ -5,18 +5,18 @@ import { getGenreStatFetch } from '../store/Slice/statSlice';
 
 interface GenreData {
     genre: string;
-    count: number;
+    songCount: number;
   }
 
-const FirstStat = () => {
+const FirstStat: React.FC = () => {
   const dispatch = useDispatch();
     const statState = useSelector((state) => state.stat);
 
     useEffect(() => {
             dispatch(getGenreStatFetch());
-      }, []);
+      }, [dispatch]);
     
-      const genreData = statState.genreSong;
+      const genreData: GenreData[] = statState.genreSong || [];
   return (
     <div>
        <h2 className="text-xl text-center font-bold mb-4">Number of Songs in Each Genre</h2>

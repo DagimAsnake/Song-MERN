@@ -9,15 +9,15 @@ interface ArtistData {
   albumsCount: number;
 }
 
-const SecondStat = () => {
+const SecondStat: React.FC = () => {
   const dispatch = useDispatch();
   const statState = useSelector((state) => state.stat);
 
   useEffect(() => {
         dispatch(getArtStatFetch());
-  }, []);
+  }, [dispatch]);
 
-  const artistData = statState.artSongAlbum;
+  const artistData: ArtistData[] = statState.artSongAlbum || [];
 
   return (
     <div>
